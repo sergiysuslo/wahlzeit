@@ -5,31 +5,35 @@ import java.util.Objects;
 public class Coordinate {
 
     private final static double EPSILON = 1E-6;
-    private double x,y,z;
+    private double x, y, z;
 
-    public Coordinate(double x, double y, double z){
+    public Coordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public double getX(){
+    public double getX() {
         return this.x;
     }
-    public double getY(){
+
+    public double getY() {
         return this.y;
     }
-    public double getZ(){
+
+    public double getZ() {
         return this.z;
     }
-    
-    //get cartesian distance 
-    public double getDistance(Coordinate coord){
-        double dist = Math.pow(coord.x-this.x,2) + Math.pow(coord.y-this.y,2) + Math.pow(coord.z-this.z,2);
+
+    // get cartesian distance
+    public double getDistance(Coordinate coord) {
+
+        double dist = Math.pow(coord.x - this.x, 2) + Math.pow(coord.y - this.y, 2) + Math.pow(coord.z - this.z, 2);
+
         return Math.sqrt(dist);
     }
 
-    private boolean isEqual(Coordinate coord){
+    private boolean isEqual(Coordinate coord) {
 
         boolean diff_X = Math.abs(x - coord.x) < EPSILON;
         boolean diff_Y = Math.abs(y - coord.y) < EPSILON;
@@ -39,18 +43,24 @@ public class Coordinate {
     }
 
     @Override
-    public boolean equals(Object object){
+    public boolean equals(Object object) {
 
-        if (object == null) return false;
+        if (this == object)
+            return true;
 
-        if(object instanceof Coordinate){
+        if (object == null)
+            return false;
+
+        if (object instanceof Coordinate) {
             return this.isEqual((Coordinate) object);
         }
         return false;
     }
 
     @Override
-    public int hashCode(){
-        return Objects.hash(x,y,z);
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
+
+
 }
