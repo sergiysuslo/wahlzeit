@@ -8,6 +8,10 @@ public class Location {
         this.coord = coordinate;
     }
 
+    public Location(double x, double y, double z){
+        this.coord = new Coordinate(x, y, z);
+    }
+
     public Coordinate getCoord(){
         return this.coord;
     }

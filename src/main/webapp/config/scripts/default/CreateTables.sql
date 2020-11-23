@@ -32,7 +32,9 @@ CREATE TABLE photos (
 	creation_time bigint,
 	coordinate_x float,
 	coordinate_y float,
-	coordinate_z float
+	coordinate_z float,
+	monument_type text,
+	construction_year integer
 );
 
 CREATE TABLE tags (
