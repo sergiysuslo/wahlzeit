@@ -11,6 +11,8 @@ public class LocationTest {
     Location   loc_1;
     Location   loc_2;
     Location   loc_3;
+    Location   loc_4;
+    Location   loc_5;
 
     @Before
     public void setup(){
@@ -20,6 +22,19 @@ public class LocationTest {
         loc_2    = new Location(1.0, 2.0, 3.0);
         loc_3    = new Location(4.4, 5.5, 6.6);
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullAsLocationConstructorArgument(){
+        
+        loc_4 = new Location(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testZeroValuesForLocationConstructor(){
+        
+        loc_5 = new Location(0.0, 0.0, 0.0);
+    }
+
 
     @Test
     public void testGetCoord(){
