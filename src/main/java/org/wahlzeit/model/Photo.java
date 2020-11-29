@@ -195,9 +195,9 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);		
-		rset.updateDouble("coordinate_x", this.location.getCoord().getX());
-		rset.updateDouble("coordinate_y", this.location.getCoord().getY());
-		rset.updateDouble("coordinate_z", this.location.getCoord().getZ());
+		rset.updateDouble("coordinate_x", this.location.getCoord().asCartesianCoordinate().getX());
+		rset.updateDouble("coordinate_y", this.location.getCoord().asCartesianCoordinate().getY());
+		rset.updateDouble("coordinate_z", this.location.getCoord().asCartesianCoordinate().getZ());
 
 	}
 

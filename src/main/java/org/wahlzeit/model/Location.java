@@ -15,7 +15,7 @@ public class Location {
         if(x == 0 && y == 0 && z == 0){
             throw new IllegalArgumentException("Coordinates for Location can't all be zero..");
         }
-        this.coord = new Coordinate(x, y, z);
+        this.coord = new CartesianCoordinate(x, y, z);
     }
 
     public Coordinate getCoord(){
