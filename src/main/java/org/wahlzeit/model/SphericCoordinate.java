@@ -1,7 +1,5 @@
 package org.wahlzeit.model;
 
-import java.util.Objects;
-
 public class SphericCoordinate implements Coordinate{
 
     private double phi;
@@ -67,9 +65,7 @@ public class SphericCoordinate implements Coordinate{
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.asCartesianCoordinate().getX(), 
-                            this.asCartesianCoordinate().getY(), 
-                            this.asCartesianCoordinate().getZ());
+        return this.asCartesianCoordinate().hashCode();
     }
 
     public double getPhi(){

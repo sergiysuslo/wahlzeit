@@ -34,6 +34,9 @@ public class CartesianCoordinate implements Coordinate {
     @Override
     public SphericCoordinate asSphericCoordinate() {
         double radius = this.asCartesianCoordinate().getCartesianDistance(SPHERE_CENTER_POINT);
+
+        if(radius == 0) return new SphericCoordinate(0.0, 0.0, 0.0);
+
         double theta  = Math.acos(this.asCartesianCoordinate().getZ()/radius);
         double phi    = Math.atan2(this.asCartesianCoordinate().getY(), this.asCartesianCoordinate().getX());
         return new SphericCoordinate(phi, theta, radius);
