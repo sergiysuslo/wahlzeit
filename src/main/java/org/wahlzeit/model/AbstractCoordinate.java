@@ -10,23 +10,61 @@ public abstract class AbstractCoordinate implements Coordinate {
     public abstract CartesianCoordinate asCartesianCoordinate();
     public abstract SphericCoordinate asSphericCoordinate();
 
-    public double getCartesianDistance(Coordinate coordinate){
-        return this.asCartesianCoordinate().getCartesianDistance(coordinate);
+    public abstract void assertClassInvariants();  //called is specific subclass, no need to implement here
+
+    protected void assertNoNullPointer(Coordinate coord){
+        if(coord == null){
+            throw new NullPointerException("Object reference of" + coord + " is null.");
+        }
     }
 
-    public double getCentralAngle(Coordinate coordinate){
-        return this.asSphericCoordinate().getCentralAngle(coordinate);
+
+    public double getCartesianDistance(Coordinate coord){
+        assertClassInvariants();
+
+        // pre
+        assertNoNullPointer(coord);
+
+        double distance = this.asCartesianCoordinate().getCartesianDistance(coord);
+
+        //post
+        assert(distance >= 0);
+
+        assertClassInvariants();
+        return distance;
+    }
+
+    public double getCentralAngle(Coordinate coord){
+        assertClassInvariants();
+
+        //pre
+        assertNoNullPointer(coord);
+
+        double centralAngle = this.asSphericCoordinate().getCentralAngle(coord);
+
+        //post
+        assert(centralAngle >= 0);
+
+        assertClassInvariants();
+        return centralAngle;
     }
 
     public boolean isEqual(Coordinate coord) {
+        assertClassInvariants();
+
+        //pre
+        assertNoNullPointer(coord);
         boolean diff_X = Math.abs(this.asCartesianCoordinate().getX() - coord.asCartesianCoordinate().getX()) < EPSILON;
         boolean diff_Y = Math.abs(this.asCartesianCoordinate().getY() - coord.asCartesianCoordinate().getY()) < EPSILON;
         boolean diff_Z = Math.abs(this.asCartesianCoordinate().getZ() - coord.asCartesianCoordinate().getZ()) < EPSILON;
+
+        assertClassInvariants();
 
         return diff_X && diff_Y && diff_Z;
     }
 
     public boolean equals(Object object) {
+        assertClassInvariants();
 
         if (this == object)
             return true;
@@ -41,11 +79,13 @@ public abstract class AbstractCoordinate implements Coordinate {
     }
 
     public int hashCode() {
+        assertClassInvariants();
         return Objects.hash(this.asCartesianCoordinate().getX(), 
                             this.asCartesianCoordinate().getY(), 
                             this.asCartesianCoordinate().getZ());
     }
 
+   
 
 
 }

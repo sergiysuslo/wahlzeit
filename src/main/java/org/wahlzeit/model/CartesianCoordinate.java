@@ -13,6 +13,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
         this.x = x;
         this.y = y;
         this.z = z;
+
+        assertClassInvariants();
     }
 
     @Override
@@ -22,22 +24,36 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
+        assertClassInvariants();
+
         double radius = this.asCartesianCoordinate().getCartesianDistance(SPHERE_CENTER_POINT);
 
         if(radius == 0) return new SphericCoordinate(0.0, 0.0, 0.0);
 
         double theta  = Math.acos(this.asCartesianCoordinate().getZ()/radius);
         double phi    = Math.atan2(this.asCartesianCoordinate().getY(), this.asCartesianCoordinate().getX());
-        return new SphericCoordinate(phi, theta, radius);
+
+        SphericCoordinate spheric = new SphericCoordinate(phi, theta, radius);
+        assertNoNullPointer(spheric);
+
+        assertClassInvariants();
+        return spheric;
     }
 
     @Override
     public double getCartesianDistance(Coordinate coord) {
+        assertClassInvariants();
+
         double dist = Math.pow(coord.asCartesianCoordinate().getX() - this.asCartesianCoordinate().getX(), 2) 
                     + Math.pow(coord.asCartesianCoordinate().getY() - this.asCartesianCoordinate().getY(), 2) 
                     + Math.pow(coord.asCartesianCoordinate().getZ() - this.asCartesianCoordinate().getZ(), 2);
+        assert Double.isFinite(dist);            
 
-        return Math.sqrt(dist);
+        double result = Math.sqrt(dist);
+        assert Double.isFinite(result);
+
+        assertClassInvariants();
+        return result;
     }
     
     public double getX() {
@@ -51,6 +67,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public double getZ() {
         return this.z;
     }
+
+    @Override
+    public void assertClassInvariants() {
+        assert Double.isFinite(this.x);
+        assert Double.isFinite(this.y);
+        assert Double.isFinite(this.z);
+
+    }
+
 
 
 }

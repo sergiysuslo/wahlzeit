@@ -10,15 +10,23 @@ public class SphericCoordinate extends AbstractCoordinate{
         this.phi    = phi;
         this.theta  = theta;
         this.radius = radius;
+
+        assertClassInvariants();
     }
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
+
         double x = this.getRadius() * Math.sin(this.getTheta()) * Math.cos(this.getPhi());
         double y = this.getRadius() * Math.sin(this.getTheta()) * Math.sin(this.getPhi());
         double z = this.getRadius() * Math.cos(this.getTheta());
 
-        return new CartesianCoordinate(x, y, z);
+        CartesianCoordinate cartesian = new CartesianCoordinate(x, y, z);
+        assertNoNullPointer(cartesian);
+
+        assertClassInvariants();
+        return cartesian;
     }
 
     @Override
@@ -28,14 +36,21 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     @Override
     public double getCentralAngle(Coordinate coord) {
+        assertClassInvariants();
+
         double deltaPhi = Math.abs(this.asSphericCoordinate().getPhi() 
                                   - coord.asSphericCoordinate().getPhi());
+        assert Double.isFinite(deltaPhi);
 
-        return Math.acos(Math.sin(this.asSphericCoordinate().getTheta())
+        double centralAngle = Math.acos(Math.sin(this.asSphericCoordinate().getTheta())
                                 * Math.sin(coord.asSphericCoordinate().getTheta())
-                       + Math.sin(this.asSphericCoordinate().getTheta())
+                            + Math.sin(this.asSphericCoordinate().getTheta())
                                 * Math.sin(coord.asSphericCoordinate().getTheta())
-                       * Math.cos(deltaPhi));
+                            * Math.cos(deltaPhi));
+        assert Double.isFinite(centralAngle);
+
+        assertClassInvariants();                    
+        return centralAngle;                    
     }
 
     public double getPhi(){
@@ -49,4 +64,14 @@ public class SphericCoordinate extends AbstractCoordinate{
     public double getRadius(){
         return this.radius;
     }
+
+    @Override
+    public void assertClassInvariants() {
+        assert (Double.isFinite(this.radius) && this.radius >= 0);
+        assert (Double.isFinite(this.phi)    && this.phi    >= 0);
+        assert (Double.isFinite(this.theta)  && this.theta  >= 0);
+
+
+    }
+    
 }
