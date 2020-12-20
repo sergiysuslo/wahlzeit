@@ -12,14 +12,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 
     public abstract void assertClassInvariants();  //called is specific subclass, no need to implement here
 
-    protected void assertNoNullPointer(Coordinate coord){
-        if(coord == null){
-            throw new NullPointerException("Object reference of" + coord + " is null.");
-        }
-    }
 
-
-    public double getCartesianDistance(Coordinate coord){
+    public double getCartesianDistance(Coordinate coord) throws NullPointerException, IllegalStateException{
         assertClassInvariants();
 
         // pre
@@ -34,7 +28,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         return distance;
     }
 
-    public double getCentralAngle(Coordinate coord){
+    public double getCentralAngle(Coordinate coord) throws NullPointerException, IllegalStateException{
         assertClassInvariants();
 
         //pre
@@ -49,7 +43,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         return centralAngle;
     }
 
-    public boolean isEqual(Coordinate coord) {
+    public boolean isEqual(Coordinate coord) throws NullPointerException, IllegalStateException{
         assertClassInvariants();
 
         //pre
@@ -63,7 +57,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         return diff_X && diff_Y && diff_Z;
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(Object object) throws IllegalStateException{
         assertClassInvariants();
 
         if (this == object)
@@ -78,11 +72,17 @@ public abstract class AbstractCoordinate implements Coordinate {
         return false;
     }
 
-    public int hashCode() {
+    public int hashCode() throws IllegalStateException{
         assertClassInvariants();
         return Objects.hash(this.asCartesianCoordinate().getX(), 
                             this.asCartesianCoordinate().getY(), 
                             this.asCartesianCoordinate().getZ());
+    }
+
+    protected void assertNoNullPointer(Coordinate coord){
+        if(coord == null){
+            throw new NullPointerException("Object reference of" + coord + " is null.");
+        }
     }
 
    

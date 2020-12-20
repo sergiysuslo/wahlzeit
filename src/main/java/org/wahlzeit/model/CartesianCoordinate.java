@@ -9,7 +9,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     private double y;
     private double z;
 
-    public CartesianCoordinate(double x, double y, double z) {
+    public CartesianCoordinate(double x, double y, double z) throws IllegalStateException{
         this.x = x;
         this.y = y;
         this.z = z;
@@ -23,7 +23,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws IllegalStateException, NullPointerException {
         assertClassInvariants();
 
         double radius = this.asCartesianCoordinate().getCartesianDistance(SPHERE_CENTER_POINT);
@@ -41,7 +41,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public double getCartesianDistance(Coordinate coord) {
+    public double getCartesianDistance(Coordinate coord) throws IllegalStateException{
         assertClassInvariants();
 
         double dist = Math.pow(coord.asCartesianCoordinate().getX() - this.asCartesianCoordinate().getX(), 2) 
@@ -70,9 +70,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     @Override
     public void assertClassInvariants() {
-        assert Double.isFinite(this.x);
-        assert Double.isFinite(this.y);
-        assert Double.isFinite(this.z);
+
+        try{
+            assert Double.isFinite(this.x);
+            assert Double.isFinite(this.y);
+            assert Double.isFinite(this.z);
+        } catch(Exception e){
+            throw new IllegalStateException();
+        }
+        
 
     }
 

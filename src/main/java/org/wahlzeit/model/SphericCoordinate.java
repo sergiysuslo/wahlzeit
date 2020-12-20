@@ -6,7 +6,7 @@ public class SphericCoordinate extends AbstractCoordinate{
     private double theta;
     private double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius){
+    public SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException{
         this.phi    = phi;
         this.theta  = theta;
         this.radius = radius;
@@ -15,7 +15,7 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException, NullPointerException{
         assertClassInvariants();
 
         double x = this.getRadius() * Math.sin(this.getTheta()) * Math.cos(this.getPhi());
@@ -35,7 +35,7 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public double getCentralAngle(Coordinate coord) {
+    public double getCentralAngle(Coordinate coord) throws IllegalStateException {
         assertClassInvariants();
 
         double deltaPhi = Math.abs(this.asSphericCoordinate().getPhi() 
@@ -67,10 +67,14 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     @Override
     public void assertClassInvariants() {
-        assert (Double.isFinite(this.radius) && this.radius >= 0);
-        assert (Double.isFinite(this.phi)    && this.phi    >= 0);
-        assert (Double.isFinite(this.theta)  && this.theta  >= 0);
-
+        try {
+            assert (Double.isFinite(this.radius) && this.radius >= 0);
+            assert (Double.isFinite(this.phi)    && this.phi    >= 0);
+            assert (Double.isFinite(this.theta)  && this.theta  >= 0);
+        } catch(Exception e) {
+            throw new IllegalStateException();
+        }
+        
 
     }
     
