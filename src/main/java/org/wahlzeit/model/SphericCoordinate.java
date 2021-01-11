@@ -1,12 +1,35 @@
 package org.wahlzeit.model;
 
-public class SphericCoordinate extends AbstractCoordinate{
+import java.util.HashMap;
 
-    private double phi;
-    private double theta;
-    private double radius;
+public final class SphericCoordinate extends AbstractCoordinate{
 
-    public SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException{
+    private final double phi;
+    private final double theta;
+    private final double radius;
+
+    private static final HashMap<String, SphericCoordinate> sphericCache = new HashMap<String, SphericCoordinate>();
+
+    public static final SphericCoordinate getSpheric(double phi, double theta, double radius){
+        final String myCoordinateString = coordinateToString(phi, theta, radius);
+
+        if(sphericCache.get(myCoordinateString) == null){
+            synchronized (SphericCoordinate.class) {
+                if(sphericCache.get(myCoordinateString) == null){
+                    sphericCache.put(myCoordinateString, new SphericCoordinate(phi, theta, radius));
+                }
+                return sphericCache.get(myCoordinateString);
+            }
+        } else {
+            return sphericCache.get(myCoordinateString);
+        }
+    }
+
+    private static final String coordinateToString(double phi, double theta, double radius) {
+            return phi + " " + theta + " " + radius;
+    }
+
+    private SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException{
         this.phi    = phi;
         this.theta  = theta;
         this.radius = radius;
@@ -18,11 +41,11 @@ public class SphericCoordinate extends AbstractCoordinate{
     public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException, NullPointerException{
         assertClassInvariants();
 
-        double x = this.getRadius() * Math.sin(this.getTheta()) * Math.cos(this.getPhi());
-        double y = this.getRadius() * Math.sin(this.getTheta()) * Math.sin(this.getPhi());
-        double z = this.getRadius() * Math.cos(this.getTheta());
+        final double x = this.getRadius() * Math.sin(this.getTheta()) * Math.cos(this.getPhi());
+        final double y = this.getRadius() * Math.sin(this.getTheta()) * Math.sin(this.getPhi());
+        final double z = this.getRadius() * Math.cos(this.getTheta());
 
-        CartesianCoordinate cartesian = new CartesianCoordinate(x, y, z);
+        CartesianCoordinate cartesian = CartesianCoordinate.getCartesian(x, y, z);
         assertNoNullPointer(cartesian);
 
         assertClassInvariants();
@@ -38,11 +61,11 @@ public class SphericCoordinate extends AbstractCoordinate{
     public double getCentralAngle(Coordinate coord) throws IllegalStateException {
         assertClassInvariants();
 
-        double deltaPhi = Math.abs(this.asSphericCoordinate().getPhi() 
+        final double deltaPhi = Math.abs(this.asSphericCoordinate().getPhi() 
                                   - coord.asSphericCoordinate().getPhi());
         assert Double.isFinite(deltaPhi);
 
-        double centralAngle = Math.acos(Math.sin(this.asSphericCoordinate().getTheta())
+        final double centralAngle = Math.acos(Math.sin(this.asSphericCoordinate().getTheta())
                                 * Math.sin(coord.asSphericCoordinate().getTheta())
                             + Math.sin(this.asSphericCoordinate().getTheta())
                                 * Math.sin(coord.asSphericCoordinate().getTheta())

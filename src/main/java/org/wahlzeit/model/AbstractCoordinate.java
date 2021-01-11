@@ -4,8 +4,6 @@ import java.util.Objects;
 
 public abstract class AbstractCoordinate implements Coordinate {
 
-    private final static double EPSILON = 1E-6;
-
     
     public abstract CartesianCoordinate asCartesianCoordinate();
     public abstract SphericCoordinate asSphericCoordinate();
@@ -19,7 +17,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         // pre
         assertNoNullPointer(coord);
 
-        double distance = this.asCartesianCoordinate().getCartesianDistance(coord);
+        final double distance = this.asCartesianCoordinate().getCartesianDistance(coord);
 
         //post
         assert(distance >= 0);
@@ -34,7 +32,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         //pre
         assertNoNullPointer(coord);
 
-        double centralAngle = this.asSphericCoordinate().getCentralAngle(coord);
+        final double centralAngle = this.asSphericCoordinate().getCentralAngle(coord);
 
         //post
         assert(centralAngle >= 0);
@@ -43,18 +41,9 @@ public abstract class AbstractCoordinate implements Coordinate {
         return centralAngle;
     }
 
-    public boolean isEqual(Coordinate coord) throws NullPointerException, IllegalStateException{
-        assertClassInvariants();
-
-        //pre
-        assertNoNullPointer(coord);
-        boolean diff_X = Math.abs(this.asCartesianCoordinate().getX() - coord.asCartesianCoordinate().getX()) < EPSILON;
-        boolean diff_Y = Math.abs(this.asCartesianCoordinate().getY() - coord.asCartesianCoordinate().getY()) < EPSILON;
-        boolean diff_Z = Math.abs(this.asCartesianCoordinate().getZ() - coord.asCartesianCoordinate().getZ()) < EPSILON;
-
-        assertClassInvariants();
-
-        return diff_X && diff_Y && diff_Z;
+    // comparing coordinates via object reference, as coordinates are value objects
+    public boolean isEqual(Coordinate coord) {
+        return this == coord;
     }
 
     public boolean equals(Object object) throws IllegalStateException{

@@ -18,10 +18,10 @@ public class CartesianCoordinateTest {
 
     @Before
     public void setup(){
-        coord_1  = new CartesianCoordinate(1.11, 22.44, 345.3);
-        coord_2  = new CartesianCoordinate(3.11, 26.44, 345.3);
-        coord_3  = new CartesianCoordinate(1.0, 2.0, 3.0);
-        coord_4  = new CartesianCoordinate(1.0, 2.0, 3.0);
+        coord_1  = CartesianCoordinate.getCartesian(1.11, 22.44, 345.3);
+        coord_2  = CartesianCoordinate.getCartesian(3.11, 26.44, 345.3);
+        coord_3  = CartesianCoordinate.getCartesian(1.0, 2.0, 3.0);
+        coord_4  = CartesianCoordinate.getCartesian(1.0, 2.0, 3.0);
     }
     @Test
     public void testCoordinateGetter(){
@@ -51,16 +51,7 @@ public class CartesianCoordinateTest {
 
     }
 
-    @Test
-    public void testAsSphericCoordinate(){
-        sphere_coord_5 = coord_3.asSphericCoordinate();
-
-        assertFalse(sphere_coord_5.equals(coord_1));
-        assertTrue(coord_4.equals(sphere_coord_5));
-
-
-    }
-
+    
     @Test
     public void testEquals(){
         assertFalse(coord_1.equals(coord_2));

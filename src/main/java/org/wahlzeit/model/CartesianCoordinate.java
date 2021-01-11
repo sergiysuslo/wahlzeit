@@ -1,15 +1,38 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
 
-public class CartesianCoordinate extends AbstractCoordinate{
+
+public final class CartesianCoordinate extends AbstractCoordinate{
 
     private final static CartesianCoordinate SPHERE_CENTER_POINT = new CartesianCoordinate(0.0, 0.0, 0.0);
 
-    private double x;
-    private double y;
-    private double z;
+    private static final HashMap<String, CartesianCoordinate> cartesianCache = new HashMap<String, CartesianCoordinate>();
 
-    public CartesianCoordinate(double x, double y, double z) throws IllegalStateException{
+    public static final CartesianCoordinate getCartesian(double x, double y, double z){
+        final String myCoordinateString = coordinateToString(x, y, z);
+
+        if(cartesianCache.get(myCoordinateString) == null){
+            synchronized (CartesianCoordinate.class) {
+                if(cartesianCache.get(myCoordinateString) == null){
+                    cartesianCache.put(myCoordinateString, new CartesianCoordinate(x, y, z));
+                }
+                return cartesianCache.get(myCoordinateString);
+            }
+        } else {
+            return cartesianCache.get(myCoordinateString);
+        }
+    }
+
+    private static final String coordinateToString(double x, double y, double z) {
+            return x + " " + y + " " + z;
+    }
+
+    private final double x;
+    private final double y;
+    private final double z;
+
+    private CartesianCoordinate(double x, double y, double z) throws IllegalStateException{
         this.x = x;
         this.y = y;
         this.z = z;
@@ -26,14 +49,14 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public SphericCoordinate asSphericCoordinate() throws IllegalStateException, NullPointerException {
         assertClassInvariants();
 
-        double radius = this.asCartesianCoordinate().getCartesianDistance(SPHERE_CENTER_POINT);
+        final double radius = this.asCartesianCoordinate().getCartesianDistance(SPHERE_CENTER_POINT);
 
-        if(radius == 0) return new SphericCoordinate(0.0, 0.0, 0.0);
+        if(radius == 0) return SphericCoordinate.getSpheric(0.0, 0.0, 0.0);
 
-        double theta  = Math.acos(this.asCartesianCoordinate().getZ()/radius);
-        double phi    = Math.atan2(this.asCartesianCoordinate().getY(), this.asCartesianCoordinate().getX());
+        final double theta  = Math.acos(this.asCartesianCoordinate().getZ()/radius);
+        final double phi    = Math.atan2(this.asCartesianCoordinate().getY(), this.asCartesianCoordinate().getX());
 
-        SphericCoordinate spheric = new SphericCoordinate(phi, theta, radius);
+        final SphericCoordinate spheric = SphericCoordinate.getSpheric(phi, theta, radius);
         assertNoNullPointer(spheric);
 
         assertClassInvariants();
