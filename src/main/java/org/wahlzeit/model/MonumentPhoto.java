@@ -6,8 +6,7 @@ import java.sql.SQLException;
 public class MonumentPhoto extends Photo {
 
     
-    private String monumentType;  // STATUE, MEMORIAL, BUILDING ..
-    private int constructionYear;
+    protected Monument monument;
 
     public MonumentPhoto(){
         super();
@@ -24,30 +23,19 @@ public class MonumentPhoto extends Photo {
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
         super.readFrom(rset);
-        monumentType = rset.getString("monument_type");
-        constructionYear = rset.getInt("construction_year");
     }
 
     @Override
     public void writeOn(ResultSet rset) throws SQLException {
         super.writeOn(rset);
-        rset.updateString("type", monumentType);
-        rset.updateInt("construction_year", this.constructionYear);
     }
 
-    public String getType(){
-        return this.monumentType;
+    public Monument getMonument(){
+        return this.monument;
     }
 
-    public void setType(String type){
-        this.monumentType = type;
+    public void setMonument(Monument monument){
+        this.monument = monument;
     }
 
-    public int getConstructionYear(){
-        return this.constructionYear;
-    }
-
-    public void setConstructionYear(int year){
-        this.constructionYear = year;
-    }
 }

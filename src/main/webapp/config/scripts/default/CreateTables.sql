@@ -34,6 +34,7 @@ CREATE TABLE photos (
 	coordinate_y float,
 	coordinate_z float,
 	monument_type text,
+	monument_name text,
 	construction_year integer
 );
 
