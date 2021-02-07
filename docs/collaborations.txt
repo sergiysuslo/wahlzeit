@@ -1,0 +1,19 @@
+Collaboration:  Monument <---> MonumentPhoto
+
+                Role Service binds Monument
+                Role Client  binds MonumentPhoto
+
+
+Collaboration:  Monument <---> MonumentType
+
+                Role BaseObject binds Monument
+                Role TypeObject binds MonumentType
+
+
+Collaboration:  Monument <---> MonumentManager
+
+                Role Manager binds MonumentManager
+                Role Element binds Monument 
+
+
+
